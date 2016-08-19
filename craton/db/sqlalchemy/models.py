@@ -74,7 +74,7 @@ class VariableAssociation(Base):
     __tablename__ = "variable_association"
 
     id = Column(Integer, primary_key=True)
-    discriminator = Column(String)
+    discriminator = Column(String(50), nullable=False)
     """Refers to the type of parent, such as 'cell' or 'device'"""
 
     variables = relationship(
@@ -103,7 +103,9 @@ class Variable(Base):
     """
     __tablename__ = 'variables'
     association_id = Column(
-        Integer, ForeignKey(VariableAssociation.id), primary_key=True)
+        Integer,
+        ForeignKey(VariableAssociation.id, name='fk_variables_variable_association'),
+        primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(JSONType)
     association = relationship(
@@ -128,7 +130,10 @@ class VariableMixin(object):
     """
     @declared_attr
     def variable_association_id(cls):
-        return Column(Integer, ForeignKey(VariableAssociation.id))
+        return Column(
+            Integer,
+            ForeignKey(VariableAssociation.id,
+                       name='fk_%ss_variable_association' % cls.__name__.lower()))
 
     @declared_attr
     def variable_association(cls):
