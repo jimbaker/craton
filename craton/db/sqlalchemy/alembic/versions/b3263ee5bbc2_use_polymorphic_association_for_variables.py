@@ -55,7 +55,7 @@ def upgrade():
     op.create_foreign_key('fk_variables_variable_association',
                           'variables', 'variable_association',
                           ['association_id'], ['id'])
-        
+
 
 def copy_and_move(resources_table_name, copy_data):
     global variable_association_id_counter
@@ -74,6 +74,7 @@ def copy_and_move(resources_table_name, copy_data):
 
 
 variable_association_id_counter = 0
+
 
 def copy_and_move_data(resources_table_name):
     global variable_association_id_counter
@@ -121,8 +122,8 @@ def copy_and_move_data(resources_table_name):
 
         # add variable_association_id value...
         connection.execute(
-            resources.update().\
-            where(resources.c.id == resource.id).\
+            resources.update().
+            where(resources.c.id == resource.id).
             values(
                 variable_association_id=sa.literal(
                     variable_association_id_counter)))

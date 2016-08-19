@@ -104,7 +104,8 @@ class Variable(Base):
     __tablename__ = 'variables'
     association_id = Column(
         Integer,
-        ForeignKey(VariableAssociation.id, name='fk_variables_variable_association'),
+        ForeignKey(VariableAssociation.id,
+                   name='fk_variables_variable_association'),
         primary_key=True)
     key = Column(String(255), primary_key=True)
     value = Column(JSONType)
@@ -133,7 +134,8 @@ class VariableMixin(object):
         return Column(
             Integer,
             ForeignKey(VariableAssociation.id,
-                       name='fk_%ss_variable_association' % cls.__name__.lower()))
+                       name='fk_%ss_variable_association' %
+                       cls.__name__.lower()))
 
     @declared_attr
     def variable_association(cls):
